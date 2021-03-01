@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "name": "(gdb) Iniciar",
             "type": "cppdbg",
@@ -12,7 +13,7 @@
             "program": "${workspaceFolder}/practica1/ficherosP1/Mytar/mytar",
             "args": ["-x", "-f", "test.mtar"],
             "stopAtEntry": true,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/practica1/ficherosP1/Mytar",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

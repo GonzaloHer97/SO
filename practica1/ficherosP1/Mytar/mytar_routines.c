@@ -14,11 +14,11 @@ extern char *use;
  *
  * Returns the number of bytes actually copied or -1 if an error occured.
  */
-int copynFile(FILE * origin, FILE * destination, int nBytes)
+long int copynFile(FILE * origin, FILE * destination, unsigned long int nBytes)
 {
 	// Complete the function
 	int aux;
-	int cont = 0;
+	long int cont = 0;
 	if(origin == NULL || destination == NULL)
 		return -1;
 	else{
@@ -48,7 +48,7 @@ char* loadstr(FILE * file)
 {
 	// Complete the function
 	char aux;
-	int tam = 0;
+	long int tam = 0;
 	do
 	{
 		aux = getc(file);
@@ -62,7 +62,7 @@ char* loadstr(FILE * file)
 
 	fseek(file, -tam, SEEK_CUR);
 
-	for(int i = 0; i < tam;i++){
+	for(long int i = 0; i < tam;i++){
 		result[i] = getc(file);
 	}
 	
@@ -134,7 +134,7 @@ int createTar(int nFiles, char *fileNames[], char tarName[])
 		header[i].name = malloc(strlen(fileNames[i]) + 1);
 		strcpy(header[i].name, fileNames[i]);
 
-		char num = copynFile(f, mTar, INT_MAX);
+		long int num = copynFile(f, mTar, INT_MAX);
 
 		if(num == -1){
 			printf("Error: el arcihvo %s no encontrado. \n", fileNames[i]);
@@ -201,7 +201,8 @@ int extractTar(char tarName[])
 	
 	for(int i = 0; i < *nFiles; i++){
 		FILE* aux = fopen(header[i].name, "w");
-		char b = copynFile(mtar, aux,header[i].size);
+		unsigned long int nB = header[i].size;
+		char b = copynFile(mtar, aux, nB);
 		fclose(aux);
 		if(b == -1){
 			printf("Error al extraer el fichero %s \n",header[i].name );

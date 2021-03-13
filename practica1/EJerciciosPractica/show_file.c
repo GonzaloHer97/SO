@@ -15,13 +15,14 @@ int main(int argc, char* argv[]){
         err(2,"THe input file %s could not be opened",argv[1]);
     }
 
-    fread(&c,sizeof(int),1,file);
-    while(c != EOF){
-        ret = fwrite(c,sizeof(int),1,stdout);
+    int ret2 = fread(&c,sizeof(int),1,file);
+    while( ret2 == 1 ){
+        ret = fwrite(&c,sizeof(int),1,stdout);
         if(ret != 1){
             fclose(file);
             err(3, "fwrite() failed!!!");
         }
+        ret2 = fread(&c,sizeof(int),1,file);
     }
     fclose(file);
     return 0;

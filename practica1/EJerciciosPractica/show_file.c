@@ -11,8 +11,6 @@ int main(int argc, char* argv[]){
     }
 
 
-
-
     if((file =fopen(argv[1],"r" )) == NULL){
         err(2,"THe input file %s could not be opened",argv[1]);
     }
@@ -26,5 +24,5 @@ int main(int argc, char* argv[]){
         }
     }
     fclose(file);
-    return 0
+    return 0;
 }

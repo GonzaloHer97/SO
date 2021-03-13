@@ -5,8 +5,28 @@
     "version": "0.2.0",
     "configurations": [
 
-
         {
+            "name": "(gdb) Iniciar",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/practica1/EJerciciosPractica/Ejercicio 2/badsort",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/practica1/EJerciciosPractica/Ejercicio 2",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Habilitar la impresión con sangría para gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+
+
+        /*{
             "name": "(gdb) Iniciar",
             "type": "cppdbg",
             "request": "launch",
@@ -24,6 +44,6 @@
                     "ignoreFailures": true
                 }
             ]
-        }
+        }*/
     ]
 }

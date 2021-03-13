@@ -1,0 +1,3 @@
+El primer fallo nos lo muestra en el bucle for dentro de la función badsort, es necesario poner un "&&" en vez del simple "&".
+El segundo fallo ocurre cuando intentamos acceder a una direccion del array que no esiste con j = 5, esto se soluciona cambiando
+la condición del bucle while a: j < (n-1)

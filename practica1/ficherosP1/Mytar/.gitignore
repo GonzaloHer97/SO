@@ -1,0 +1,9 @@
+#Ficheros de Texto y ejecutables
+*.txt
+*.o
+*.dat
+*.mtar
+#Carpetas de vscode y temporal
+*.vscode/
+*tmp/
+*.swp

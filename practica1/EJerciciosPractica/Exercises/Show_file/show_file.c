@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 		err(2,"The input file %s could not be opened",argv[1]);
 	/*size of bytes in the loop*/
 	if (argc>2){
-		bufferSize = atoi(argv[2]);
+		//bufferSize = atoi(argv[2]);
 		if ((bufferSize = atoi(argv[2])) < 1){
 			bufferSize = 1;
 		}

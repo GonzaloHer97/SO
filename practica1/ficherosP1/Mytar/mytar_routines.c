@@ -14,11 +14,11 @@ extern char *use;
  *
  * Returns the number of bytes actually copied or -1 if an error occured.
  */
-long int copynFile(FILE * origin, FILE * destination, unsigned long int nBytes)
+int
+copynFile(FILE * origin, FILE * destination, int nBytes)
 {
-	// Complete the function
 	int aux;
-	long int cont = 0;
+	int cont = 0;
 	if(origin == NULL || destination == NULL)
 		return -1;
 	else{
@@ -44,9 +44,9 @@ long int copynFile(FILE * origin, FILE * destination, unsigned long int nBytes)
  * 
  * Returns: !=NULL if success, NULL if error
  */
-char* loadstr(FILE * file)
+char*
+loadstr(FILE * file)
 {
-	// Complete the function
 	char aux;
 	long int tam = 0;
 	do
@@ -68,7 +68,6 @@ char* loadstr(FILE * file)
 	
 	
 	return result;
-
 }
 
 /** Read tarball header and store it in memory.
@@ -80,9 +79,9 @@ char* loadstr(FILE * file)
  * On success it returns the starting memory address of an array that stores 
  * the (name,size) pairs read from the tar file. Upon failure, the function returns NULL.
  */
-stHeaderEntry* readHeader(FILE * tarFile, int *nFiles)
+stHeaderEntry*
+readHeader(FILE * tarFile, int *nFiles)
 {
-	// Complete the function
 	fread(nFiles,sizeof(int),1,tarFile);
 	stHeaderEntry *header = malloc(sizeof(stHeaderEntry) * (*nFiles));
 	for(int i =0; i < *nFiles;i++){
@@ -112,11 +111,12 @@ stHeaderEntry* readHeader(FILE * tarFile, int *nFiles)
  * the (file name,file size) pairs in the tar archive.
  *
  * Important reminder: to calculate the room needed for the header, a simple sizeof 
- * of stHeaderEntry will  work. Bear in mind that, on disk, file names found in (name,size) 
- * pairs occupy strlen(name)not+1 bytes.
+ * of stHeaderEntry will not work. Bear in mind that, on disk, file names found in (name,size) 
+ * pairs occupy strlen(name)+1 bytes.
  *
  */
-int createTar(int nFiles, char *fileNames[], char tarName[])
+int
+createTar(int nFiles, char *fileNames[], char tarName[])
 {
 	FILE *mTar = fopen(tarName, "w");
 	stHeaderEntry *header = malloc(sizeof(stHeaderEntry)*nFiles);
@@ -134,7 +134,7 @@ int createTar(int nFiles, char *fileNames[], char tarName[])
 		header[i].name = malloc(strlen(fileNames[i]) + 1);
 		strcpy(header[i].name, fileNames[i]);
 
-		long int num = copynFile(f, mTar, INT_MAX);
+		int num = copynFile(f, mTar, INT_MAX);
 
 		if(num == -1){
 			printf("Error: el arcihvo %s no encontrado. \n", fileNames[i]);
@@ -180,7 +180,8 @@ int createTar(int nFiles, char *fileNames[], char tarName[])
  * stored in the data section of the tarball.
  *
  */
-int extractTar(char tarName[])
+int
+extractTar(char tarName[])
 {
 	FILE* mtar = fopen(tarName,"r");
 
@@ -215,5 +216,4 @@ int extractTar(char tarName[])
 	fclose(mtar);
 
 	return EXIT_SUCCESS;
-	
 }

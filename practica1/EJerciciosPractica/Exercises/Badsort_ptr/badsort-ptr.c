@@ -6,8 +6,8 @@ typedef struct {
 } item;
 
 item array[] = {
-    {"bill", 3},
-    {"neil", 4},
+    {"bill", 7},
+    {"neil", 8},
     {"john", 2},
     {"rick", 5},
     {"alex", 1},
@@ -21,7 +21,7 @@ void sort(item *a, int n) {
     for(; (i < n) && (s != 0); i++) {
         s = 0;
         p = a;
-        j = n-2;
+        j = n-1;
         do {
             if( (p+s)->key > (p+s+1)->key) {
                 item t = *(p+s);
@@ -29,7 +29,7 @@ void sort(item *a, int n) {
                 *(p+s+1) = t;                
             }
             s++;  
-        } while ( --j >= 0 );
+        } while ( --j > 0 );
        
     }
 }

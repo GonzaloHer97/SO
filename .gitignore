@@ -3,6 +3,8 @@
 *.o
 *.dat
 *.mtar
+*.pdf
+*.zip
 #Carpetas de vscode y temporal
 *.vscode/
 *tmp/

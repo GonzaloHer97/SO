@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>// añadimos biblioteca de booleanos para trabajar con ellos 
 #include <sys/stat.h>
 #include <unistd.h>
 #include <time.h>
@@ -7,33 +8,48 @@
 #include <grp.h>
 
 char permissions[] = {'x', 'w', 'r'};
-
-int status(char *);
+//añadimos a la funcion un parametro symbolic para indicar si hay que hacer la lectura como enlace simbolico o no
+int status(char *,bool symbolic);
 
 int main(int argc, char *argv[]) {
-	int i;
+	int i = 1;//inicializamos la variable i a 1
+	bool symbolic = false; //creamos variable para indicar la lectura de los enlaces simbolicos 
 
 	// See if the number of arguments in the command line is correct
 	if (argc < 2)
 		fprintf(stderr, "Usage: %s files...\n", argv[0]), exit(-1);
-
+	else{	
+		//Si el primer argumento es -L modificamos la variable anterior 	
+		if (strcmp(argv[i],"-L")==0 ){
+			symbolic = true;
+			i++;
+		}
+	}
+	// Quitamos la inicializacion del contador i ya que si tenemos el parametro -L
+	// hay que emprezar a ejecutar la funcion sobre el siguiente argumento
 	// Show the status of each file
-	for (i=1; i<argc; i++)
-		status(argv[i]);
+	for (; i<argc; i++)
+		status(argv[i],symbolic);
 
 	exit(0);
 }
 
-int status(char *filename) {
+int status(char *filename,bool symbolic) {
 	struct stat buf;
 	struct passwd *pw;
 	struct group *gr;
 	int i;
-
-	// Fills buf with the stat structure containing file attributes
-	if (stat(filename, &buf) == -1)
-		perror(filename), exit(-1);
-	printf("File: %s\n", filename);
+    // modificamos el método a utilizar para leer el stat del fichero dependiendo de parametro symbolic
+	if (symbolic){
+		if (lstat(filename, &buf) == -1)
+			perror(filename), exit(-1);
+		printf("File: %s\n", filename);
+	}else{
+		// Fills buf with the stat structure containing file attributes
+		if (stat(filename, &buf) == -1)
+			perror(filename), exit(-1);
+		printf("File: %s\n", filename);
+	}
 
 	// The st_dev field describes the device on which this file resides. 
 	// The following technique is useful to decompose the device ID (pair major-minor) in this field.

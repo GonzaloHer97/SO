@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>// añadimos biblioteca de booleanos para trabajar con ellos 
+#include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <time.h>

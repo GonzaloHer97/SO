@@ -13,7 +13,7 @@ int status(char *,bool symbolic);
 
 int main(int argc, char *argv[]) {
 	int i = 1;//inicializamos la variable i a 1
-	bool symbolic = false; //creamos variable para indicar la lectura de los enlaces simbolicos 
+	bool symbolic = true; //creamos variable para indicar la lectura de los enlaces simbolicos 
 
 	// See if the number of arguments in the command line is correct
 	if (argc < 2)
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 	else{	
 		//Si el primer argumento es -L modificamos la variable anterior 	
 		if (strcmp(argv[i],"-L")==0 ){
-			symbolic = true;
+			symbolic = false;
 			i++;
 		}
 	}

@@ -474,6 +474,45 @@ static int my_truncate(const char *path, off_t size)
     return 0;
 }
 
+static int my_read(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi){
+  char buffer[BLOCK_SIZE_BYTES];
+  int bytes2Read = size, totalRead = 0;
+  NodeStruct *node = myFileSystem.nodes[fi->fh];
+  int readReturn;
+
+  fprintf(stderr, "--->>>my_read: path %s, size %zu, offset %jd, fh %"PRIu64"\n", path, size, (intmax_t)offset, fi->fh);
+
+  // Read data
+  while(bytes2Read) {
+      int i;
+      int currentBlock, offBlock;
+      currentBlock = node->blocks[offset / BLOCK_SIZE_BYTES];
+      offBlock = offset % BLOCK_SIZE_BYTES;
+
+      lseek(myFileSystem.fdVirtualDisk, currentBlock * BLOCK_SIZE_BYTES, SEEK_SET); //Puede fallar?
+      readReturn = read(myFileSystem.fdVirtualDisk, &buffer, BLOCK_SIZE_BYTES);
+
+      if(readReturn == -1) {
+          fprintf(stderr,"Error reading blocks in my_read\n");
+          return -EIO;
+      }
+
+      if(readReturn != 0){
+        for(i = offBlock; (i < BLOCK_SIZE_BYTES) && (totalRead < size); i++) {
+            buf[totalRead] = buffer[i];
+            totalRead++;
+        }
+        bytes2Read -= (i - offBlock);
+  			offset += i;
+      }
+    }
+
+  sync();
+
+
+  return totalRead;
+}
+
 
 struct fuse_operations myFS_operations = {
     .getattr	= my_getattr,					// Obtain attributes from a file
@@ -483,5 +522,8 @@ struct fuse_operations myFS_operations = {
     .write		= my_write,						// Write data into a file already opened
     .release	= my_release,					// Close an opened file
     .mknod		= my_mknod,						// Create a new file
-};
+    //------------New_Implementations----------------------------------
 
+    .read = my_read,
+    //.unlink = my_unlink,
+};

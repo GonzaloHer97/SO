@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MPOINT="./mount-point"
+MPOINT="./point"
 
 rm -R -f test
 mkdir test

@@ -518,7 +518,7 @@ static int my_read(const char *path, char *buf, size_t size, off_t offset, struc
 }
 
 static int my_unlink(const char *path){
-    int idxNode, idxDir, aux;
+    int idxNode, idxDir, result = 0;
 
     //Buscar path en el directorio del SF
     if((idxDir = findFileByName(&myFileSystem, (char *)path + 1)) == -1) 
@@ -529,8 +529,8 @@ static int my_unlink(const char *path){
     idxNode = myFileSystem.directory.files[idxDir].nodeIdx;
 
     //Truncar el fichero utilizando resizeNode
-    if(aux = resizeNode(idxNode, (size_t) 0) != 0) 
-        return aux;
+    if((result = resizeNode(idxNode, (size_t) 0)) != 0) 
+        return result;
 
     //Marcar la entrada de directorio como libre
     myFileSystem.directory.files[idxDir].freeFile = true;
@@ -553,9 +553,9 @@ static int my_unlink(const char *path){
     updateSuperBlock(&myFileSystem);
     updateBitmap(&myFileSystem);
     updateNode(&myFileSystem, idxNode, myFileSystem.nodes[idxNode]);
-    free(myFileSystem->idxNode);
+    //free(&myFileSystem.nodes[idxNode]); // al liberar el nodo nos da un error y no funciona
     sync();
-    return 0;
+    return result;
 }
 
 struct fuse_operations myFS_operations = {

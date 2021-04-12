@@ -513,43 +513,43 @@ static int my_read(const char *path, char *buf, size_t size, off_t offset, struc
   return totalRead;
 }
 
-static int my_unlink(const char *path){
-    int idxNode, idxDir, aux;
+// static int my_unlink(const char *path){
+//     int idxNode, idxDir, aux;
 
-    //Buscar path en el directorio del SF
-    if((idxDir = findFileByName(&myFileSystem, (char *)path + 1)) == -1) 
-        return -ENOENT;
+//     //Buscar path en el directorio del SF
+//     if((idxDir = findFileByName(&myFileSystem, (char *)path + 1)) == -1) 
+//         return -ENOENT;
 
-    //idxNode = nodo-i del fichero
-    //obtenemos el nodo del file en el directory
-    idxNode = myFileSystem.directory.files[idxDir].nodeIdx;
+//     //idxNode = nodo-i del fichero
+//     //obtenemos el nodo del file en el directory
+//     idxNode = myFileSystem.directory.files[idxDir].nodeIdx;
 
-    //Truncar el fichero utilizando resizeNode
-    if(aux = resizeNode(idxNode, (size_t) 0) != 0) 
-        return aux;
+//     //Truncar el fichero utilizando resizeNode
+//     if(aux = resizeNode(idxNode, (size_t) 0) != 0) 
+//         return aux;
 
-    //Marcar la entrada de directorio como libre
-    myFileSystem.directory.files[idxDir].freeFile = true;
-    //Decrementar el contador de ficheros del directorio
-    myFileSystem.directory.numFiles--;
+//     //Marcar la entrada de directorio como libre
+//     myFileSystem.directory.files[idxDir].freeFile = true;
+//     //Decrementar el contador de ficheros del directorio
+//     myFileSystem.directory.numFiles--;
 
-    //Marcar el nodo-i como libre
-    myFileSystem.nodes[idxNode]->freeNode = true;
-    myFileSystem.nodes[idxNode]->numBlocks = 0;
-    myFileSystem.nodes[idxNode]->fileSize = 0;
+//     //Marcar el nodo-i como libre
+//     myFileSystem.nodes[idxNode]->freeNode = true;
+//     myFileSystem.nodes[idxNode]->numBlocks = 0;
+//     myFileSystem.nodes[idxNode]->fileSize = 0;
 
-    //Incrementar el contador de nodos-i libres
-    myFileSystem.numFreeNodes++;
+//     //Incrementar el contador de nodos-i libres
+//     myFileSystem.numFreeNodes++;
 
-    //Actualizar el directorio en el disco virtual
-    updateDirectory(&myFileSystem);
+//     //Actualizar el directorio en el disco virtual
+//     updateDirectory(&myFileSystem);
 
-    //Actualizar el nodo-i en el disco virtual
-    //Liberar la memoria del nodo-i y actualizar la tabla
-    updateNode(&myFileSystem, idxNode, myFileSystem.nodes[idxNode]);
-    sync();
-    return 0;
-}
+//     //Actualizar el nodo-i en el disco virtual
+//     //Liberar la memoria del nodo-i y actualizar la tabla
+//     updateNode(&myFileSystem, idxNode, myFileSystem.nodes[idxNode]);
+//     sync();
+//     return 0;
+// }
 
 struct fuse_operations myFS_operations = {
     .getattr	= my_getattr,					// Obtain attributes from a file
@@ -563,6 +563,6 @@ struct fuse_operations myFS_operations = {
      //------------New_Implementations----------------------------------
 
     .read = my_read,
-    .unlink = my_unlink,
+    // .unlink = my_unlink,
 };
 

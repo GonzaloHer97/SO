@@ -548,12 +548,15 @@ static int my_unlink(const char *path){
     //Actualizar el directorio en el disco virtual
     updateDirectory(&myFileSystem);
 
-    //Actualizar el nodo-i en el disco virtual
-    //Liberar la memoria del nodo-i y actualizar la tabla
+    //Actualizar el nodo-i en el disco virtual   
     updateSuperBlock(&myFileSystem);
-    updateBitmap(&myFileSystem);
+    updateBitmap(&myFileSystem); 
     updateNode(&myFileSystem, idxNode, myFileSystem.nodes[idxNode]);
-    //free(&myFileSystem.nodes[idxNode]); // al liberar el nodo nos da un error y no funciona
+    
+    //Liberar la memoria del nodo-i y actualizar la tabla
+    free(myFileSystem.nodes[idxNode]);
+    myFileSystem.nodes[idxNode] = NULL;    
+
     sync();
     return result;
 }

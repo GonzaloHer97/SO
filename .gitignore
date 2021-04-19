@@ -3,7 +3,16 @@
 *.o
 *.dat
 *.mtar
+*.pdf
+*.zip
+*virtual-disk
+*copy
+*ecsym
+*status
+*distribution
 #Carpetas de vscode y temporal
 *.vscode/
 *tmp/
 *.swp
+*temp/
+*mount-point/
